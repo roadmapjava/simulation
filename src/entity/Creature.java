@@ -1,18 +1,27 @@
 package entity;
 
-import map.*;
+import gamemap.*;
 
 import java.util.List;
 
 public abstract class Creature extends Entity {
-    private final int SPEED;
+    private Coordinates coordinates;
+    private final int speed;
     private int hp;
     private final PathSearcher pathSearcher = new PathSearcher();
 
 
     public Creature(int speed, int hp) {
-        this.SPEED = speed;
+        this.speed = speed;
         this.hp = hp;
+    }
+
+    public Coordinates getCoordinates() {
+        return coordinates;
+    }
+
+    public void setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
     }
 
     public void makeMove(WorldMap worldMap) {
@@ -23,7 +32,7 @@ public abstract class Creature extends Entity {
     }
 
     public int getSpeed() {
-        return SPEED;
+        return speed;
     }
 
     public void setHp(int hp) {

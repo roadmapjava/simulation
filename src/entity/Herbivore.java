@@ -1,6 +1,6 @@
 package entity;
 
-import map.*;
+import gamemap.*;
 
 import java.util.List;
 
@@ -15,7 +15,8 @@ public class Herbivore extends Creature {
         int speed = this.getSpeed();
         for (int i = 0; i < moves.size(); i++) {
             if (!worldMap.isEmpty(moves.get(i))) {
-                if (worldMap.getEntity(moves.get(i)).getClass() == Grass.class) {
+                boolean isFood = worldMap.getEntity(moves.get(i)).getClass() == Grass.class;
+                if (isFood) {
                     worldMap.removeEntity(moves.get(i));
                     applyMove(moves.get(i), worldMap);
                 }

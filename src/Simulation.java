@@ -1,20 +1,32 @@
 import action.*;
-import map.*;
+import gamemap.*;
 
 import java.util.*;
 
 public class Simulation {
-    private final WorldMap worldMap = WorldMapCreator.create();
+    private final WorldMap worldMap;
     private int movesCyclesCounter = 0;
-    private final MapRenderer mapRenderer = new MapRenderer(worldMap);
-    public static volatile boolean isOngoing = true;
-    public static volatile boolean isPaused = false;
-    private List<Action> initActions = new ArrayList<>(List.of(
-            new InitialEntitiesPlacementAction()
-    ));
+    private final MapRenderer mapRenderer;
+    private static volatile boolean isOngoing = true;
+    private static volatile boolean isPaused = false;
+    private List<Action> initActions = List.of(
+            new InitialEntitiesPlacementAction());
     private List<Action> turnActions = new ArrayList<>(List.of(
             new MoveAction(), new AddingEntitiesAction()
     ));
+
+    public Simulation(WorldMap worldMap) {
+        this.worldMap = worldMap;
+        mapRenderer = new MapRenderer(worldMap);
+    }
+
+    public static void setIsPaused(boolean isPaused) {
+        Simulation.isPaused = isPaused;
+    }
+
+    public static void setIsOngoing(boolean isOngoing) {
+        Simulation.isOngoing = isOngoing;
+    }
 
     private void nextTurn() {
         for (Action action : turnActions) {
@@ -52,36 +64,10 @@ public class Simulation {
 
 
     public static void main(String[] args) {
-        Simulation simulation = new Simulation();
-        new InputThread().start();
+        Simulation simulation = new Simulation(WorldMapFactory.create());
+        InputThread inputThread = new InputThread();
+        inputThread.start();
         simulation.startSimulation();
     }
 }
 
-class InputThread extends Thread {
-    private static final Scanner scanner = new Scanner(System.in);
-
-    @Override
-    public void run() {
-
-        while (true) {
-            String input = scanner.nextLine();
-            if (input.length() != 1 || input.charAt(0) < 49 || input.charAt(0) > 51 || input.equals(" ")) {
-                System.out.println("Вы ввели неверную цифру. Попробуйте снова...");
-                continue;
-            }
-            int flag = Integer.parseInt(input);
-            switch (flag) {
-                case 1:
-                    Simulation.isPaused = true;
-                    break;
-                case 2:
-                    Simulation.isPaused = false;
-                    break;
-                case 3:
-                    Simulation.isOngoing = false;
-                    return;
-            }
-        }
-    }
-}

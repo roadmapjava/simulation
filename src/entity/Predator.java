@@ -1,18 +1,18 @@
 package entity;
 
-import map.*;
+import gamemap.*;
 
 import java.util.List;
 
 public class Predator extends Creature {
-    private final int POWER = 50;
+    private final int power = 50;
 
     public Predator(int speed, int hp) {
         super(speed, hp);
     }
 
-    public int getPOWER() {
-        return POWER;
+    public int getPower() {
+        return power;
     }
 
     @Override
@@ -20,14 +20,12 @@ public class Predator extends Creature {
         int speed = this.getSpeed();
         for (int i = 0; i < moves.size(); i++) {
             if (!worldMap.isEmpty(moves.get(i))) {
-                if (worldMap.getEntity(moves.get(i)).getClass() == Herbivore.class) {
+                boolean isFood = worldMap.getEntity(moves.get(i)).getClass() == Herbivore.class;
+                if (isFood) {
                     Herbivore herbivore = (Herbivore) worldMap.getEntity(moves.get(i));
-                    if (i == 0) {
-                        herbivore.setHp(herbivore.getHp() - this.getPOWER());
-                        herbivore.setHp(herbivore.getHp() - this.getPOWER());
-                        speed -= 2;
-                    } else {
-                        herbivore.setHp(herbivore.getHp() - this.getPOWER());
+                    int hits = (i == 0) ? 2 : 1;
+                    for (int j = 0; j < hits; j++) {
+                        herbivore.setHp(herbivore.getHp() - this.getPower());
                         speed--;
                     }
                     if (herbivore.getHp() <= 0) {

@@ -1,6 +1,6 @@
 package action;
 
-import map.WorldMap;
+import gamemap.WorldMap;
 
 public class InitialEntitiesPlacementAction extends Action {
     @Override

@@ -1,4 +1,4 @@
-package map;
+package gamemap;
 
 import entity.Entity;
 
@@ -17,8 +17,8 @@ public class MapRenderer {
     }
 
     public void render() {
-        for (int i = 0; i < worldMap.getMAP_SIZE(); i++) {
-            for (int j = 0; j < worldMap.getMAP_SIZE(); j++) {
+        for (int i = 0; i < worldMap.getSide(); i++) {
+            for (int j = 0; j < worldMap.getSide(); j++) {
                 Coordinates coordinates = new Coordinates(i, j);
                 if (worldMap.isEmpty(coordinates)) {
                     System.out.print(EMPTINESS_SPRITE);
